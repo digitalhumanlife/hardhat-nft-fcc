@@ -1,4 +1,4 @@
-const { assert } = require("chai")
+const { assert, expect } = require("chai")
 const { network, deployments, ethers } = require("hardhat")
 const { developmentChains, networkConfig } = require("../../helper-hardhat-config")
 
@@ -25,6 +25,21 @@ const { developmentChains, networkConfig } = require("../../helper-hardhat-confi
                   const dogTokenUriZero = await randomIpfsNft.getDogTokenUris(0)
                   console.log(dogTokenUriZero)
                   assert(dogTokenUriZero.includes("ipfs://"))
+              })
+          })
+
+          describe("requestRandomNft", function () {
+              it("Error thrown for low eth when minting", async function () {
+                  await expect(randomIpfsNft.requestNft()).to.be.revertedWith(
+                      "RandomIpfsNft__NeedMoreETHSent"
+                  )
+              })
+              it("emits event when minting", async function () {
+                  const minimumFee = await randomIpfsNft.getMintFee()
+                  await expect(randomIpfsNft.requestNft({ value: minimumFee })).to.emit(
+                      randomIpfsNft,
+                      "NftRequested"
+                  )
               })
           })
       })
