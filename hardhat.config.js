@@ -11,6 +11,7 @@ require("hardhat-deploy")
  */
 
 const COINMARKETCAP_API_KEY = process.env.COINMARKETCAP_API_KEY || ""
+const GOERLI_RPC_URL = process.env.GOERLI_RPC_URL
 const SEPOLIA_RPC_URL =
     process.env.SEPOLIA_RPC_URL || "https://eth-sepolia.g.alchemy.com/v2/YOUR-API-KEY"
 const PRIVATE_KEY = process.env.PRIVATE_KEY || ""
@@ -23,9 +24,17 @@ module.exports = {
             chainId: 31337,
             // gasPrice: 130000000000,
         },
+        goerli: {
+            url: GOERLI_RPC_URL,
+            accounts: [PRIVATE_KEY],
+            chainId: 5,
+            gas: 30000000,
+            blockConfirmations: 6,
+        },
         sepolia: {
             url: SEPOLIA_RPC_URL,
             accounts: [PRIVATE_KEY],
+            gas: 30000000,
             chainId: 11155111,
             blockConfirmations: 6,
         },
